@@ -60,12 +60,8 @@ Cocok untuk pencocokan properti, barang, kendaraan, atau jasa.
 ## ⚡ Cara Instalasi
 
 ```bash
-git clone https://github.com/kukuhtw/palugada-brooker-ai.git
-cd palugada-brooker-ai
-composer install
-cp .env.example .env   # Masukkan API KEY OpenAI & Pinecone
-php -S localhost:8080 -t public
-```
+git clone https://github.com/kukuhtw/brooker_paluugada.git
+
 
 ---
 
