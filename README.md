@@ -78,6 +78,7 @@ http://localhost/palugada/public/create_admin.php
 bikin api chatgpt di openai
 bikin api di pinecone
 
+cek folder documentation
 ---
 
 ## 📞 Kontak Developer
