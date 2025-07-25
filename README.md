@@ -73,10 +73,17 @@ git clone https://github.com/kukuhtw/brooker_paluugada.git
 * 🌐 Website: [https://kumpulproperti.com](https://kumpulproperti.com)
 
 ---
+📄 Lisensi
+GNU General Public License v3.0
 
-## 📄 Lisensi
+Anda bebas:
 
-MIT License — Bebas digunakan dan dimodifikasi, cukup beri atribusi ke pengembang asli.
+Menggunakan dan menjalankan aplikasi
+
+Mempelajari dan memodifikasi kode
+
+Mendistribusikan ulang, dengan syarat tetap open-source
+
 
 ---
 
