@@ -8,6 +8,9 @@ Aplikasi ini menggunakan teknologi **LLM (ChatGPT/OpenAI)** dan **vector search 
  untuk melakukan pencarian berbasis makna (semantic search).
 Cocok untuk pencocokan properti, barang, kendaraan, atau jasa.
 
+demo video
+https://www.youtube.com/watch?v=uf27Ttudq6M
+
 ---
 
 ## 🚀 Fitur Utama
