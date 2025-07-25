@@ -52,6 +52,7 @@ Cocok untuk pencocokan properti, barang, kendaraan, atau jasa.
 /public/         → Halaman publik & admin
 /src/            → Class utama: DataInventory, TransaksiQuery
 /logs/           → File log sistem
+/sql/             → File mysql script  
 /bootstrap.php   → Inisialisasi koneksi & logger
 ```
 
@@ -61,6 +62,14 @@ Cocok untuk pencocokan properti, barang, kendaraan, atau jasa.
 
 ```bash
 git clone https://github.com/kukuhtw/brooker_paluugada.git
+
+Windows
+bikin folder di c:/xampp/htdocs/palugada
+
+Linux
+bikin folder di var/www/html/palugada
+
+
 
 
 ---
