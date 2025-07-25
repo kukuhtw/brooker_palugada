@@ -84,7 +84,7 @@ Mempelajari dan memodifikasi kode
 
 Mendistribusikan ulang, dengan syarat tetap open-source
 
-
+https://www.gnu.org/licenses/gpl-3.0.html
 ---
 
 ## ❤️ Suka Proyek Ini?
