@@ -69,8 +69,11 @@ bikin folder di c:/xampp/htdocs/palugada
 Linux
 bikin folder di var/www/html/palugada
 
+jalankan untuk bikin akses admin pertama kali
+http://localhost/palugada/public/create_admin.php
 
-
+bikin api chatgpt di openai
+bikin api di pinecone
 
 ---
 
