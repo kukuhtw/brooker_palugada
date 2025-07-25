@@ -4,7 +4,9 @@ Berikut adalah isi file `README.md` lengkap untuk GitHub proyek **Brooker AI / C
 # 🤖 Brooker AI / Calo AI Palugada  
 **"Apa elo mau? Gw ada." – Platform AI untuk mencocokkan keinginan pembeli dengan penjual**
 
-Aplikasi ini menggunakan teknologi **LLM (ChatGPT/OpenAI)** dan **vector search Pinecone** untuk melakukan pencarian berbasis makna (semantic search). Cocok untuk pencocokan properti, barang, kendaraan, atau jasa.
+Aplikasi ini menggunakan teknologi **LLM (ChatGPT/OpenAI)** dan **vector search Pinecone**
+ untuk melakukan pencarian berbasis makna (semantic search).
+Cocok untuk pencocokan properti, barang, kendaraan, atau jasa.
 
 ---
 
