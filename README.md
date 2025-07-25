@@ -89,9 +89,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 
 ## ❤️ Suka Proyek Ini?
 
-Silakan ⭐ repo ini dan forking untuk dikembangkan jadi white-label marketplace Anda sendiri!
+Silakan ⭐ repo ini dan forking untuk dikembangkan jadi usaha brooker / mediator anda sendiri
 
 ```
 
-Jika kamu ingin saya bantu buatkan file `.env.example`, `bootstrap.php`, atau dokumentasi API-nya, tinggal beri tahu.
-```
+
