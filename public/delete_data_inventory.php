@@ -16,57 +16,70 @@ $ownerFilter = $_POST['ownerFilter'] ?? '';
 $page        = (int) ($_POST['page']  ?? 1);
 
 if (!$id) {
-    $_SESSION['info'] = ['status'=>'danger','message'=>'ID tidak valid.'];
+    $_SESSION['info'] = ['status' => 'danger', 'message' => 'ID tidak valid.'];
     header("Location: view_data.php?owner=" . urlencode($ownerFilter) . "&page={$page}");
     exit;
 }
 
-// 3. Hapus dari database MySQL
+// 3. Ambil settings dari database
 $conn = $db->getConnection();
-$stmt = $conn->prepare("DELETE FROM data_inventory WHERE id = :id");
-$stmt->execute([':id' => $id]);
-Logger::info("DataInventory ID {$id} dihapus dari database.");
+try {
+    $keys = ['OPEN_AI_KEY', 'PINECONE_API_KEY', 'PINECONE_INDEX_NAME', 'PINECONE_NAMESPACE'];
+    $in   = str_repeat('?,', count($keys) - 1) . '?';
+    $stmt = $conn->prepare("SELECT `key`, `value` FROM settings WHERE `key` IN ($in)");
+    $stmt->execute($keys);
+    $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-// 4. Hapus vector di Pinecone
-//    Pastikan di bootstrap.php atau environment sudah tersedia:
-//      - PINECONE_API_KEY
-//      - PINECONE_INDEX_NAME
-//      - PINECONE_ENVIRONMENT
-//      - PINECONE_NAMESPACE (jika Anda pakai namespace khusus)
-$apiKey      = getenv('PINECONE_API_KEY');
-$indexName   = getenv('PINECONE_INDEX_NAME');
-$environment = getenv('PINECONE_ENVIRONMENT');
-$namespace   = getenv('PINECONE_NAMESPACE') ?: ''; 
+    $pineconeApiKey    = $settings['PINECONE_API_KEY']    ?? '';
+    $pineconeIndexName = $settings['PINECONE_INDEX_NAME'] ?? '';
+    $namespace         = $settings['PINECONE_NAMESPACE']  ?? '';
+} catch (Exception $e) {
+    Logger::error("Gagal mengambil konfigurasi Pinecone: " . $e->getMessage());
+    $_SESSION['info'] = ['status' => 'danger', 'message' => 'Gagal mengambil konfigurasi Pinecone.'];
+    header("Location: view_data.php?owner=" . urlencode($ownerFilter) . "&page={$page}");
+    exit;
+}
 
-$url = "https://{$indexName}.pinecone.io/vectors/delete";
+// 4. Hapus vector dari Pinecone
+$url = "https://{$pineconeIndexName}.pinecone.io/vectors/delete";
 $payload = [
     'ids'       => [(string)$id],
     'namespace' => $namespace,
 ];
+
+Logger::debug("Mengirim permintaan hapus ke Pinecone: " . json_encode($payload));
 
 $ch = curl_init($url);
 curl_setopt_array($ch, [
     CURLOPT_POST           => true,
     CURLOPT_HTTPHEADER     => [
         'Content-Type: application/json',
-        'Api-Key: ' . $apiKey,
+        'Api-Key: ' . $pineconeApiKey,
     ],
     CURLOPT_POSTFIELDS     => json_encode($payload),
     CURLOPT_RETURNTRANSFER => true,
 ]);
 
 $response = curl_exec($ch);
-if ($response === false) {
-    Logger::error("Gagal menghapus vector Pinecone ID {$id}: " . curl_error($ch));
-} else {
-    Logger::info("Pinecone delete response for ID {$id}: {$response}");
-}
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$error    = curl_error($ch);
 curl_close($ch);
 
-// 5. Redirect dengan notifikasi
-$_SESSION['info'] = [
-    'status'  => 'success',
-    'message' => "Data ID {$id} berhasil dihapus."
-];
+if ($response === false || $httpCode >= 400) {
+    Logger::error("Gagal menghapus vector Pinecone ID {$id}. HTTP {$httpCode}, Error: {$error}, Response: {$response}");
+    $_SESSION['info'] = ['status' => 'danger', 'message' => "Gagal menghapus data ID {$id} dari Pinecone."];
+    header("Location: view_data.php?owner=" . urlencode($ownerFilter) . "&page={$page}");
+    exit;
+}
+
+Logger::info("Vector ID {$id} berhasil dihapus dari Pinecone. Response: {$response}");
+
+// 5. Hapus dari MySQL setelah Pinecone berhasil
+$stmt = $conn->prepare("DELETE FROM data_inventory WHERE id = :id");
+$stmt->execute([':id' => $id]);
+Logger::info("DataInventory ID {$id} dihapus dari database.");
+
+// 6. Redirect dengan notifikasi sukses
+$_SESSION['info'] = ['status' => 'success', 'message' => "Data ID {$id} berhasil dihapus dari Pinecone dan MySQL."];
 header("Location: view_data.php?owner=" . urlencode($ownerFilter) . "&page={$page}");
 exit;
